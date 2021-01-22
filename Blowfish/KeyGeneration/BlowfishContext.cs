@@ -35,7 +35,11 @@ namespace BlowfishManaged.KeyGeneration
             Array.Copy(BlowfishConstants.sbox, sbox, BlowfishConstants.sbox.LongLength);
 
             Schedule = new KeySchedule(Key);
-            Setup();
+
+            if (Key.Length != 0)
+            {
+                Setup();
+            }
         }
 
         /// <summary>

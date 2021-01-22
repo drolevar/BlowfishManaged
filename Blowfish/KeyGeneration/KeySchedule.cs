@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlowfishManaged.KeyGeneration
 {
@@ -52,6 +48,11 @@ namespace BlowfishManaged.KeyGeneration
             // the s-box init vectors left off.
             Subkeys = new UInt32[18];
             Array.Copy(BlowfishConstants.parray, Subkeys, 18);
+
+            if (Original.Length == 0)
+            {
+                return;
+            }
 
             // Cycle through the key, xor-ing each byte with the byte in the subkey array.
             // When the original key is exhausted, just loop back to the beginning, until

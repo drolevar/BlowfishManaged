@@ -77,10 +77,7 @@ namespace BlowfishManaged
         /// </summary>
         public override byte[] IV
         {
-            get
-            {
-                return base.IVValue;
-            }
+            get => base.IVValue;
             set
             {
                 if (value.Length != BlockSize / 8) throw new CryptographicException("IV must be equal to the block size!");
@@ -107,7 +104,11 @@ namespace BlowfishManaged
         {
             get
             {
-                return new KeySizes[] { new KeySizes(8, 448, 1) };
+                return new KeySizes[]
+                {
+                    new(8, 448, 1),
+                    new(0, 0, 0)
+                };
             }
         }
 
@@ -172,17 +173,9 @@ namespace BlowfishManaged
         /// <returns></returns>
         public override ICryptoTransform CreateDecryptor(byte[] rgbKey, byte[] rgbIV)
         {
-            BlowfishContext encryptionContext = null;
-
-            if (ByteOperations.ArraysEqual(rgbKey, Key))
-            {
-                if (Context == null) Context = new BlowfishContext(Key);
-                encryptionContext = Context;
-            }
-            else
-            {
-                encryptionContext = new BlowfishContext(rgbKey);
-            }
+            var encryptionContext = ByteOperations.ArraysEqual(rgbKey, Key)
+                ? Context ??= new BlowfishContext(Key)
+                : new BlowfishContext(rgbKey);
 
             return new BlowfishManagedTransform(encryptionContext, Mode, BlowfishManagedTransformMode.Decrypt);
         }

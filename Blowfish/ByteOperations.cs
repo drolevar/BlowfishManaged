@@ -42,10 +42,10 @@ namespace BlowfishManaged
 
             for (int j = 0; j < 8; j++)
             {
-                newData |= ((UInt64)Data[offset + j] << ((7 - j) * 8));
+                newData |= (UInt64)Data[offset + j] << (j * 8);
             }
 
-            return newData;
+            return Swap(newData);
         }
 
         /// <summary>
@@ -56,10 +56,11 @@ namespace BlowfishManaged
         internal static byte[] UnpackUInt64IntoBytes(UInt64 Data)
         {
             byte[] Bytes = new byte[8];
+            Data = Swap(Data);
 
             for (int i = 0; i < 8; i++)
             {
-                Bytes[i] = (byte)(0xFF & (Data >> ((7 - i) * 8)));
+                Bytes[i] = (byte)(0xFF & (Data >> (i * 8)));
             }
 
             return Bytes;
