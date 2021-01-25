@@ -115,6 +115,11 @@ namespace BlowfishManaged
         /// <returns>The computed transform.</returns>
         public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
         {
+            if (inputCount == 0)
+            {
+                return new byte[] {};
+            }
+            
             UInt64 block = ByteOperations.PackBytesIntoUInt64(inputBuffer, inputOffset);
 
             // Call a function from the blowfish engine function.
